@@ -10,7 +10,7 @@ router.post('/',[ ValidationMiddleware.validJWTNeeded,async function (req, res, 
     helper.sendResponse(res, addTask);
 }]);
 router.get('/:id?/', [ValidationMiddleware.validJWTNeeded,async function (req, res, next) {
-    console.log(req.body)
+    console.log('ini param jwt',req.jwt.id)
     const getTask = await m$task.get(req.params.id)
     helper.sendResponse(res, getTask);
 }]);

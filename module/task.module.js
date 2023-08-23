@@ -4,7 +4,7 @@ const mysql = new(require(`${__class_dir}/mariadb.class.js`))(config.db);
 const Joi =  require('joi');
 
 class _task{
-    add(data){
+    add(userId,data){
         // Validate data
         const schema = Joi.object({
             item: Joi.string()
@@ -24,8 +24,8 @@ class _task{
         }
         // Insert data to database
         const sql = {
-            query: `INSERT INTO task (items) VALUES (?)`,
-            params: [data.item]
+            query: `INSERT INTO task (user_id,items) VALUES (?,?)`,
+            params: [userId,data.item]
         }
         return mysql.query(sql.query, sql.params)
             .then(data=>{
@@ -45,14 +45,14 @@ class _task{
                 }
             })
     }
-    get(id){
+    get(userId,id){
         let sql = {};
         // get  data to database
         if(id){
-            sql.query = `SELECT * FROM task WHERE id =  (?)`;
+            sql.query = `SELECT * FROM task WHERE id =  (?) AND  user_id = ${userId}`;
             sql.params = id;
         }else{
-            sql.query = `SELECT * FROM task`;
+            sql.query = `SELECT * FROM task WHERE user_id = ${userId}`;
         }
 
         return mysql.query(sql.query, sql.params)
@@ -73,7 +73,7 @@ class _task{
                 }
             })
     }
-    update(data){
+    update(userId,data){
         // Validate data
         console.log(data);
         const schema = Joi.object({
@@ -97,8 +97,8 @@ class _task{
 
         // Insert data to database
         const sql = {
-            query: `UPDATE task SET items = (?) WHERE id = ?`,
-            params: [data.item,data.id]
+            query: `UPDATE task SET items = (?) WHERE id = ? AND user_id = ?`,
+            params: [data.item,data.id,userId]
         }
 
         return mysql.query(sql.query, sql.params)
@@ -119,7 +119,7 @@ class _task{
                 }
             })
     }
-    delete(data){
+    delete(userId,data){
         const schema = Joi.object({
             id: Joi.string()
         }).options({
@@ -139,8 +139,8 @@ class _task{
         }
 
         let sql = {
-            query: `DELETE FROM task WHERE id =  (?)`,
-            params: [data.id]
+            query: `DELETE FROM task WHERE id =  (?) AND user_id = ?`,
+            params: [data.id,userId]
         };
 
         return mysql.query(sql.query, sql.params)

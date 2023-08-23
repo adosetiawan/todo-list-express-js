@@ -33,6 +33,7 @@ class _authCheck{
                     return res.status(401).send();
                 } else {
                     req.jwt = jwt.verify(authorization[1], config.jwt.keys);
+                    console.log(req.jwt)
                     return next();
                 }
     
