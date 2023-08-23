@@ -14,6 +14,7 @@ const expressWs = require('express-ws')(app, server);
 
 const config = require('./config/app.config.json');
 const urlWebsite = 'site';
+console.log('ini bagian app,js');
 
 global.__basedir = __dirname;
 global.__config_dir = __basedir + '/config';
@@ -146,6 +147,7 @@ for (const mainRoute in routers) {
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 	//if it's api request, return json instead
+	console.log('ini header',req.headers);
 	if(req.headers['content-type'] == 'application/json' || (req.headers['authorization'] && req.headers['authorization'].toLowerCase().includes('bearer '))){
 		res.status(404).send({
 			status: false,

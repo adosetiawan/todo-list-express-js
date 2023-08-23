@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const { has } = require('lodash');
 const saltRounds = 10;
 
-class _task{
+class _users{
     add(data){
         // Validate data
         const schema = Joi.object({
@@ -204,4 +204,4 @@ class _task{
     }
 }
 
-module.exports = new _task();
+module.exports = new _users();
